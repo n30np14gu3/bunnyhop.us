@@ -1,17 +1,337 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    <ClCompile Include="DllMain.cpp" />
+    <ClCompile Include="source-sdk\math\vector3d.cpp">
+      <Filter>source-sdk\math</Filter>
+    </ClCompile>
+    <ClCompile Include="source-sdk\math\view_matrix.cpp">
+      <Filter>source-sdk\math</Filter>
+    </ClCompile>
+    <ClCompile Include="dependencies\interfaces\interfaces.cpp">
+      <Filter>dependencies\interfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="dependencies\math\math.cpp">
+      <Filter>dependencies\math</Filter>
+    </ClCompile>
+    <ClCompile Include="dependencies\utilities\hook.cpp">
+      <Filter>dependencies\utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="dependencies\utilities\md5.cpp">
+      <Filter>dependencies\utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="dependencies\utilities\netvar_manager.cpp">
+      <Filter>dependencies\utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="dependencies\utilities\render.cpp">
+      <Filter>dependencies\utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="dependencies\utilities\utilities.cpp">
+      <Filter>dependencies\utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="core\hooks\hooks.cpp">
+      <Filter>core\hooks</Filter>
+    </ClCompile>
+    <ClCompile Include="core\features\bhop\bhop.cpp">
+      <Filter>core\features\bhop</Filter>
+    </ClCompile>
+    <ClCompile Include="websockets\ws_api.cpp">
+      <Filter>websockets</Filter>
+    </ClCompile>
+    <ClCompile Include="bhop_api\bhop_api.cpp">
+      <Filter>bhop_api</Filter>
+    </ClCompile>
+    <ClCompile Include="SDK\crypto\base64\base64.cpp">
+      <Filter>SDK\crypto\base64</Filter>
+    </ClCompile>
+    <ClCompile Include="SDK\crypto\hash\sha256.cpp">
+      <Filter>SDK\crypto\hash</Filter>
+    </ClCompile>
+    <ClCompile Include="SDK\crypto\hash\sha512.cpp">
+      <Filter>SDK\crypto\hash</Filter>
+    </ClCompile>
+    <ClCompile Include="core\features\skinchanger\glovechanger.cpp">
+      <Filter>core\features\skinchanger</Filter>
+    </ClCompile>
+    <ClCompile Include="core\features\skinchanger\knifehook.cpp">
+      <Filter>core\features\skinchanger</Filter>
+    </ClCompile>
+    <ClCompile Include="core\features\skinchanger\parser.cpp">
+      <Filter>core\features\skinchanger</Filter>
+    </ClCompile>
+    <ClCompile Include="core\features\skinchanger\skinchanger.cpp">
+      <Filter>core\features\skinchanger</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="core">
+      <UniqueIdentifier>{b12a3530-f3b5-4121-852f-91c00fdc965f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    <Filter Include="core\features">
+      <UniqueIdentifier>{e1a9f287-3bb7-4beb-a940-49f7edab323c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    <Filter Include="core\hooks">
+      <UniqueIdentifier>{486351da-16f0-43cb-b1bf-e729d35865ab}</UniqueIdentifier>
     </Filter>
+    <Filter Include="source-sdk">
+      <UniqueIdentifier>{3350733e-3afa-428c-a2f0-42f02bc53281}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source-sdk\classes">
+      <UniqueIdentifier>{41749faf-badb-4969-89e0-6d57a695ee79}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source-sdk\math">
+      <UniqueIdentifier>{0371a809-a519-4fdf-99b2-072858f14228}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source-sdk\misc">
+      <UniqueIdentifier>{7221d9d2-cbb5-4149-a35f-9f949346fb33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source-sdk\structs">
+      <UniqueIdentifier>{ed03149c-56b2-49ba-b95a-90f00618b3a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dependencies">
+      <UniqueIdentifier>{348f1358-8520-4b91-8869-439d496e9737}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dependencies\interfaces">
+      <UniqueIdentifier>{e0fefe88-d45d-4e6a-943d-64ee72ff7ce7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dependencies\math">
+      <UniqueIdentifier>{327cc064-d43f-452b-a4fa-d4e7fbc16384}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dependencies\utilities">
+      <UniqueIdentifier>{669a0ba1-2c9c-48c7-80f3-da4607d3a4a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\features\bhop">
+      <UniqueIdentifier>{1c5831c6-2d00-4e11-86ff-5582d490db4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="websockets">
+      <UniqueIdentifier>{7655a553-7d18-45b1-b661-09e78d1813f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="bhop_api">
+      <UniqueIdentifier>{4e614153-eaba-4bfa-8024-b12866642712}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SDK">
+      <UniqueIdentifier>{22308e9a-d38f-4c07-b6de-db21b2d76c1a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SDK\crypto">
+      <UniqueIdentifier>{47e585ea-1808-4e5e-8db5-6c1601386a0e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SDK\crypto\hash">
+      <UniqueIdentifier>{31a9a861-6f04-406b-846b-b1f684078509}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SDK\crypto\base64">
+      <UniqueIdentifier>{a16df3b2-8a49-4636-951b-fc174f4a9ecd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\features\skinchanger">
+      <UniqueIdentifier>{524320a5-5294-439e-b767-ba9e998fdb9d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="source-sdk\classes\c_usercmd.hpp">
+      <Filter>source-sdk\classes</Filter>
+    </ClInclude>
+    <ClInclude Include="source-sdk\classes\client_class.hpp">
+      <Filter>source-sdk\classes</Filter>
+    </ClInclude>
+    <ClInclude Include="source-sdk\classes\collideable.hpp">
+      <Filter>source-sdk\classes</Filter>
+    </ClInclude>
+    <ClInclude Include="source-sdk\classes\convar.hpp">
+      <Filter>source-sdk\classes</Filter>
+    </ClInclude>
+    <ClInclude Include="source-sdk\classes\entities.hpp">
+      <Filter>source-sdk\classes</Filter>
+    </ClInclude>
+    <ClInclude Include="source-sdk\classes\net_channel.hpp">
+      <Filter>source-sdk\classes</Filter>
+    </ClInclude>
+    <ClInclude Include="source-sdk\classes\recv_props.hpp">
+      <Filter>source-sdk\classes</Filter>
+    </ClInclude>
+    <ClInclude Include="source-sdk\classes\studio.hpp">
+      <Filter>source-sdk\classes</Filter>
+    </ClInclude>
+    <ClInclude Include="source-sdk\classes\view_setup.h">
+      <Filter>source-sdk\classes</Filter>
+    </ClInclude>
+    <ClInclude Include="source-sdk\math\utl_vector.hpp">
+      <Filter>source-sdk\math</Filter>
+    </ClInclude>
+    <ClInclude Include="source-sdk\math\vector2d.hpp">
+      <Filter>source-sdk\math</Filter>
+    </ClInclude>
+    <ClInclude Include="source-sdk\math\vector3d.hpp">
+      <Filter>source-sdk\math</Filter>
+    </ClInclude>
+    <ClInclude Include="source-sdk\math\view_matrix.hpp">
+      <Filter>source-sdk\math</Filter>
+    </ClInclude>
+    <ClInclude Include="source-sdk\misc\color.hpp">
+      <Filter>source-sdk\misc</Filter>
+    </ClInclude>
+    <ClInclude Include="source-sdk\structs\dlight.hpp">
+      <Filter>source-sdk\structs</Filter>
+    </ClInclude>
+    <ClInclude Include="source-sdk\structs\materials.hpp">
+      <Filter>source-sdk\structs</Filter>
+    </ClInclude>
+    <ClInclude Include="source-sdk\structs\models.hpp">
+      <Filter>source-sdk\structs</Filter>
+    </ClInclude>
+    <ClInclude Include="source-sdk\structs\vertex_t.hpp">
+      <Filter>source-sdk\structs</Filter>
+    </ClInclude>
+    <ClInclude Include="source-sdk\structs\weaponinfo.hpp">
+      <Filter>source-sdk\structs</Filter>
+    </ClInclude>
+    <ClInclude Include="source-sdk\sdk.hpp">
+      <Filter>source-sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\interfaces\c_global_vars_base.hpp">
+      <Filter>dependencies\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\interfaces\engine_sounds.hpp">
+      <Filter>dependencies\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\interfaces\glow_manager.hpp">
+      <Filter>dependencies\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\interfaces\i_app_system.hpp">
+      <Filter>dependencies\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\interfaces\i_base_client_dll.hpp">
+      <Filter>dependencies\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\interfaces\i_client_entity_list.hpp">
+      <Filter>dependencies\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\interfaces\i_client_mode.hpp">
+      <Filter>dependencies\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\interfaces\i_client_state.hpp">
+      <Filter>dependencies\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\interfaces\i_console.hpp">
+      <Filter>dependencies\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\interfaces\i_game_event_manager.hpp">
+      <Filter>dependencies\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\interfaces\i_input.hpp">
+      <Filter>dependencies\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\interfaces\i_input_system.hpp">
+      <Filter>dependencies\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\interfaces\i_localize.hpp">
+      <Filter>dependencies\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\interfaces\i_material_system.hpp">
+      <Filter>dependencies\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\interfaces\i_panel.hpp">
+      <Filter>dependencies\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\interfaces\i_player_movement.hpp">
+      <Filter>dependencies\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\interfaces\i_render_view.hpp">
+      <Filter>dependencies\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\interfaces\i_surface.hpp">
+      <Filter>dependencies\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\interfaces\i_trace.hpp">
+      <Filter>dependencies\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\interfaces\imageformats.h">
+      <Filter>dependencies\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\interfaces\interfaces.hpp">
+      <Filter>dependencies\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\interfaces\iv_debug_overlay.hpp">
+      <Filter>dependencies\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\interfaces\iv_effects.hpp">
+      <Filter>dependencies\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\interfaces\iv_engine_client.hpp">
+      <Filter>dependencies\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\interfaces\iv_model_info.hpp">
+      <Filter>dependencies\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\interfaces\iv_model_render.hpp">
+      <Filter>dependencies\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\interfaces\iv_render_beams.hpp">
+      <Filter>dependencies\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\math\math.hpp">
+      <Filter>dependencies\math</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\utilities\fnv.hpp">
+      <Filter>dependencies\utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\utilities\hook.hpp">
+      <Filter>dependencies\utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\utilities\md5.hpp">
+      <Filter>dependencies\utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\utilities\netvar_manager.hpp">
+      <Filter>dependencies\utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\utilities\render.hpp">
+      <Filter>dependencies\utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\utilities\singleton.hpp">
+      <Filter>dependencies\utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\utilities\utilities.hpp">
+      <Filter>dependencies\utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="dependencies\common_includes.hpp">
+      <Filter>dependencies</Filter>
+    </ClInclude>
+    <ClInclude Include="core\hooks\hooks.hpp">
+      <Filter>core\hooks</Filter>
+    </ClInclude>
+    <ClInclude Include="core\features\bhop\bhop.hpp">
+      <Filter>core\features\bhop</Filter>
+    </ClInclude>
+    <ClInclude Include="websockets\ws_api.h">
+      <Filter>websockets</Filter>
+    </ClInclude>
+    <ClInclude Include="bhop_api\bhop_api.h">
+      <Filter>bhop_api</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\crypto\XorStr.h">
+      <Filter>SDK\crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\crypto\base64\base64.hpp">
+      <Filter>SDK\crypto\base64</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\crypto\hash\sha256.hpp">
+      <Filter>SDK\crypto\hash</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\crypto\hash\sha512.hpp">
+      <Filter>SDK\crypto\hash</Filter>
+    </ClInclude>
+    <ClInclude Include="core\features\skinchanger\glovechanger.hpp">
+      <Filter>core\features\skinchanger</Filter>
+    </ClInclude>
+    <ClInclude Include="core\features\skinchanger\knifehook.hpp">
+      <Filter>core\features\skinchanger</Filter>
+    </ClInclude>
+    <ClInclude Include="core\features\skinchanger\parser.hpp">
+      <Filter>core\features\skinchanger</Filter>
+    </ClInclude>
+    <ClInclude Include="core\features\skinchanger\skinchanger.hpp">
+      <Filter>core\features\skinchanger</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>
