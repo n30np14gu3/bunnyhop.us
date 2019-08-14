@@ -7,7 +7,7 @@ namespace bunnyhop_loader.SDK
     {
         public int status;
         public string token;
-        public string subscribe;
+        public bool subscribe;
         public int dateEnd;
         public string[] error;
         public int version;

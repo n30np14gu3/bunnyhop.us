@@ -1,18 +1,11 @@
 ﻿using bunnyhop_loader.SDK;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using WebSocketSharp;
 using xNet;
@@ -25,8 +18,9 @@ namespace bunnyhop_loader
     public partial class MainWindow : Window
     {
         private bool _isDrag;
+        private bool _isLinked;
 
-        private byte[] _dll = null;
+        private string _dll = "";
         private int _csgoPid;
 
         private bool _injected;
@@ -44,8 +38,18 @@ namespace bunnyhop_loader
 
         private void DragHeader_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            if(_isLinked)
+                return;
+
             _isDrag = true;
-            DragMove();
+            try
+            {
+                DragMove();
+            }
+            catch
+            {
+                //nothing
+            }
         }
 
         private void DragHeader_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -123,11 +127,17 @@ namespace bunnyhop_loader
             BLogout.Visibility = Visibility.Visible;
             BActionBtn.Visibility = Visibility.Visible;
 
+            if(ProgramData.UserInfo.subscribe)
+            {
+                BShowWebsite.Content = UnixTimeStampToDateTime(ProgramData.UserInfo.dateEnd);
+            }
             if (UnixTimeStampToDateTime(ProgramData.UserInfo.version) > ProgramData.LastUpdate)
             {
                 updateRequested();
                 return;
             }
+
+            BActionBtn.IsEnabled = true;
 
             IntPtr hwnd = WinApi.FindWindowA(IntPtr.Zero, "Counter-Strike: Global Offensive");
             if (hwnd != IntPtr.Zero)
@@ -147,9 +157,9 @@ namespace bunnyhop_loader
                     _isEnabled = false;
                     BActionBtn.Content = "Turn on bunnyhop";
                 }
-
-                BActionBtn.IsEnabled = true;
             }
+
+
         }
 
         private DateTime UnixTimeStampToDateTime(double unixTimeStamp)
@@ -162,11 +172,14 @@ namespace bunnyhop_loader
         private void showMessage(string message, string actionText, string actionType, string url = "")
         {
             //InfoMessage.Background = new SolidColorBrush(backColor);
-            InfoMessage.Tag = url;
-            InfoMessage_Text.Tag = actionType;
-            InfoMessage_Text.ActionContent = actionText;
-            InfoMessage_Text.Content = message;
-            InfoMessage.IsActive = true;
+            Dispatcher.Invoke(() =>
+            {
+                InfoMessage.Tag = url;
+                InfoMessage_Text.Tag = actionType;
+                InfoMessage_Text.ActionContent = actionText;
+                InfoMessage_Text.Content = message;
+                InfoMessage.IsActive = true;
+            });
         }
 
         private void BLogin_Click(object sender, RoutedEventArgs e)
@@ -190,6 +203,8 @@ namespace bunnyhop_loader
                 ws.OnMessage += Ws_OnMessage;
                 ws.OnError += Ws_OnError;
                 ws.Connect();
+                if (!ws.IsAlive)
+                    return;
                 await Task.Delay(-1);
             }
         }
@@ -205,7 +220,7 @@ namespace bunnyhop_loader
                         WsResponce<PingStruct> ping = obj.ToObject<WsResponce<PingStruct>>();
                         Dispatcher.Invoke(() => 
                         {
-                            TOnline.Content = $"ONLINE: {ping.data.online}";
+                            TOnline.Content = $"{ping.data.online}";
                         });
                         break;
 
@@ -233,6 +248,7 @@ namespace bunnyhop_loader
 
         private void MainForm_Loaded(object sender, RoutedEventArgs e)
         {
+            Keyboard.Focus(TLogin);
             initOnline();
             autoAuth();
         }
@@ -244,19 +260,32 @@ namespace bunnyhop_loader
             if (!_injected)
             {
                 BActionBtn.IsEnabled = false;
-                showMessage("Происходит запуск, подождите...", "Закрыть", "");
+                showMessage("Starting up, wait couple of seconds...", "Close", "");
                 await Task.Run(() => runCsGo());
 #if !DEBUG
                 await Task.Run(() => downloadLibs());
                 if(!_status)
                     return;
 #else
-                _status = true;
-                _dll = File.ReadAllBytes("test.dll");
+                if (MessageBox.Show("Use CE?", "", MessageBoxButton.YesNo) == MessageBoxResult.No)
+                {
+                    _status = true;
+                    _dll = new FileInfo("test.dll").FullName;
+                }
+                else
+                {
+                    MessageBox.Show("Press OK after Inject", "");
+                    goto inject_skip;
+                }
+
 #endif
                 await Task.Run(() => injectLibs());
                 if (!_status)
                     return;
+
+#if DEBUG
+                inject_skip:
+#endif
                 await Task.Run(() => signCheat());
                 if (!_status)
                     return;
@@ -265,10 +294,10 @@ namespace bunnyhop_loader
                 _injected = true;
                 BActionBtn.IsEnabled = true;
                 _isEnabled = true;
-                BActionBtn.Content = "Выключить";
+                BActionBtn.Content = "Turn off bunnyhop";
                 _checkcsgo = new Thread(validation) { IsBackground = true, Priority = ThreadPriority.Lowest };
                 _checkcsgo.Start();
-                showMessage("bunnyhop успешно запущен!", "Закрыть", "");
+                showMessage("Bunnyhop launched successful!", "Close", "");
             }
             else
             {
@@ -281,7 +310,7 @@ namespace bunnyhop_loader
                     BActionBtn.Content = _isEnabled ? "Turn off bunnyhop" : "Turn on bunnyhop";
                     IntPtr comand = _isEnabled ? (IntPtr)0x102 : (IntPtr)0x101;
                     WinApi.SendMessage(hwnd, 0, IntPtr.Zero, comand);
-                    showMessage($"Вы {(_isEnabled ? "включили" : "выключили")} bunnyhpop", "Закрыть", "");
+                    showMessage($"You have turned {(_isEnabled ? "on" : "off")} bunnyhop", "Close", "");
                 }
                 else
                 {
@@ -303,7 +332,7 @@ namespace bunnyhop_loader
                         _isEnabled = false;
                         _injected = false;
                         _status = false;
-                        Dispatcher.Invoke(() => { BActionBtn.Content = "Run Bunnyhop"; });
+                        if (Dispatcher != null) Dispatcher.Invoke(() => { BActionBtn.Content = "Run Bunnyhop"; });
                         _checkcsgo?.Abort();
                         _checkcsgo = null;
                         break;
@@ -328,16 +357,16 @@ namespace bunnyhop_loader
             try
             {
                 if (!Injector.ManualMapInject(_csgoPid, _dll))
-                    throw new Exception("Не удалось запустить bunnyhop! Попробуйте ещё раз...");
+                    throw new Exception("There was trouble with launching bunnyhop. Try again...");
             }
             catch (Exception ex)
             {
-                showMessage(ex.Message, "Закрыть", "action_close");
+                showMessage(ex.Message, "Close", "action_close");
                 _status = false;
             }
             finally
             {
-                Array.Clear(_dll, 0, _dll.Length);
+                _dll = "";
             }
         }
 
@@ -392,16 +421,26 @@ namespace bunnyhop_loader
                     RequestParams data = new RequestParams();
                     data["hwid"] = ProgramData.Hwid;
 
-                    _dll = request.Post("https://bunnyhop.us/api/application/request_dll", data).ToBytes();
+                    string tmpFile = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName() + ".dll");
+                    byte[] tmp = request.Post("https://bunnyhop.us/api/software/request_dll", data).ToBytes();
+                    if(tmp.Length == 0)
+                        throw new Exception("");
+
+
+                    _dll = tmpFile;
+
+                    
                     if (_dll.Length == 0)
                         throw new Exception("");
 
+                    File.WriteAllBytes(tmpFile, tmp);
+                    Array.Clear(tmp, 0, tmp.Length);
                     _status = true;
                 }
             }
             catch
             {
-                showMessage("Ошибка подключения. Попробуйте ещё раз...", "Закрыть", "action_close");
+                showMessage("Program error, try again later. Code: #f32522", "Close", "action_close");
                 _status = false;
             }
         }
@@ -409,13 +448,25 @@ namespace bunnyhop_loader
         void updateRequested()
         {
 #if !DEBUG
-            showMessage("Вышло новое обновление! Загрузите новую версию с нашего сайта.", "Загрузить", "open_url", "https://bunnyhop.us");
+            showMessage("New update released! Download the new version from our website.", "Download", "open_url", "https://bunnyhop.us");
             BLogin.IsEnabled = false;
             BActionBtn.IsEnabled = false;
 #else
             BActionBtn.IsEnabled = true;
             return;
 #endif
+        }
+
+        private void BShowWebsite_Click(object sender, RoutedEventArgs e)
+        {
+            Process.Start("https://bunnyhop.us");
+        }
+
+        private void Label_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            _isLinked = true;
+            Process.Start("https://bunnyhop.us");
+            _isLinked = false;
         }
     }
 }

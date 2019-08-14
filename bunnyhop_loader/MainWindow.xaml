@@ -6,7 +6,7 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:bunnyhop_loader"
         mc:Ignorable="d"
-        Title="MainWindow" Height="300" Width="500"
+        Title="bunnyhop.us" Height="300" Width="500"
         WindowStartupLocation="CenterScreen"
         TextElement.FontSize="13"
         TextOptions.TextFormattingMode="Ideal"
@@ -17,16 +17,18 @@
                 Height="18" Width="15" FontSize="14" Background="Transparent" BorderBrush="#00124C85" Foreground="#FFF8ED04" RenderTransformOrigin="0.585,0.818" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,2,12,0" Padding="0" Click="CloseBtn_Click"  />
         <Button x:Name="MinBtn"  Style="{DynamicResource MaterialDesignToolButton}" Content="{materialDesign:PackIcon Minus}"
                 Height="18" Width="15" FontSize="14" Background="Transparent" BorderBrush="#00124C85" Foreground="#FFF8ED04" RenderTransformOrigin="0.585,0.818" HorizontalAlignment="Right" Margin="0,6,27,0" Padding="0" VerticalAlignment="Top" Click="MinBtn_Click"/>
-        <TextBox x:Name="TLogin" HorizontalAlignment="Left" Height="36" Margin="37,145,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="195" Style="{StaticResource RectagleInput}" FontSize="12.5" FontWeight="SemiBold" Text="type you login"  />
+        <StackPanel FocusManager.FocusedElement="{Binding ElementName=TLogin}">
+            <TextBox  x:Name="TLogin" HorizontalAlignment="Left" Height="36" Margin="37,145,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="195" Style="{StaticResource RectagleInput}" FontSize="12.5" FontWeight="SemiBold" Text=""/>
+        </StackPanel>
+        
         <Button x:Name="BLogin" Content="Log in" Height="37" Margin="38,191,268,0" VerticalAlignment="Top" Style="{StaticResource MaterialDesignFlatButton}" Foreground="Black" Background="#FFF8ED04" FontSize="12.5" FontWeight="SemiBold" Click="BLogin_Click"/>
-        <Button x:Name="BShowWebsite" Content="Move to our website" Height="37" Margin="268,144,37,0" VerticalAlignment="Top" Style="{StaticResource MaterialDesignFlatButton}" Foreground="Black" Background="#FFF8ED04" FontSize="12.5" FontWeight="SemiBold"/>
-        <Label x:Name="LoginInfoLabel" Content="LOG IN" HorizontalAlignment="Left" Margin="37,60,0,0" VerticalAlignment="Top" Foreground="#FFF8ED04" FontSize="16.67" Width="56" Padding="0" FontWeight="SemiBold"/>
+        <Button x:Name="BShowWebsite" Content="Move to our website" Height="37" Margin="268,144,37,0" VerticalAlignment="Top" Style="{StaticResource MaterialDesignFlatButton}" Foreground="Black" Background="#FFF8ED04" FontSize="12.5" FontWeight="SemiBold" Click="BShowWebsite_Click"/>
+        <Label x:Name="LoginInfoLabel" Content="LOG IN" HorizontalAlignment="Left" Margin="37,60,0,0" VerticalAlignment="Top" Foreground="#FFF8ED04" FontSize="16.67" Width="195" Padding="0" FontWeight="SemiBold"/>
         <Label x:Name="AdsInfoLabel" Content="DONT HAVE ACCOUNT?" Margin="268,60,43,0" VerticalAlignment="Top" Foreground="#FFF8ED04" FontSize="16.67" Padding="0" FontWeight="SemiBold"/>
         <TextBlock Margin="61,257,60,22" TextWrapping="Wrap" Text="bunnyhop® are registered trademarks of BUNNYHOP.US. All rights reserved. All other copyrights and
  trademarks are the property of their respective owners." Foreground="#FFF8ED04" FontSize="8.33" TextAlignment="Center"/>
         <TextBlock x:Name="AdsInfoText" Margin="268,86,44,0" TextWrapping="Wrap" Text="Don't have an account? Create it. Go to our website and click «Create Account» " VerticalAlignment="Top" Height="45" Foreground="#FFFF" FontSize="12.5" TextAlignment="Left" FontWeight="SemiBold"/>
         <TextBlock x:Name="LoginInfoText" HorizontalAlignment="Left" Margin="37,86,0,0" TextWrapping="Wrap" Text="Enter your login to get into your account. If you don't have an account – create it. " VerticalAlignment="Top" Height="48" Width="195" Foreground="#FFFF" FontSize="12.5" TextAlignment="Left"/>
-        <Label x:Name="Bhop_usLink" Content="www.bunnyhop.us" Margin="311,204,81,0" VerticalAlignment="Top" Style="{StaticResource linkStyle}" Padding="0" FontSize="12.5" FontWeight="SemiBold"/>
         <Button x:Name="BLogout" Content="Log out" Height="37" Margin="38,191,268,0" VerticalAlignment="Top" Style="{StaticResource MaterialDesignFlatButton}" Foreground="#FF00F0FF" Background="Black" FontSize="12.5" FontWeight="SemiBold" BorderBrush="#FF00F0FF" BorderThickness="1" Visibility="Hidden" Click="BLogout_Click"/>
         <Button x:Name="BActionBtn" Content="Launch Bunny Hop" Height="37" Margin="38,144,268,0" VerticalAlignment="Top" Style="{StaticResource MaterialDesignFlatButton}" Foreground="Black" Background="#FF00FF9F" FontSize="12.5" FontWeight="SemiBold" Visibility="Hidden" Click="BActionBtn_Click"/>
         <materialDesign:Snackbar
@@ -38,6 +40,8 @@
                 Tag=""
                 ActionContent="UNDO" Name="InfoMessage_Text" ActionClick="InfoMessage_Text_ActionClick"/>
         </materialDesign:Snackbar>
-        <Label x:Name="TOnline" Content="ONLINE: 0" HorizontalAlignment="Left" Margin="37,35,0,0" VerticalAlignment="Top" Foreground="#FFF8ED04" FontSize="16.67" Width="462" Padding="0" FontWeight="SemiBold"/>
+        <Label x:Name="TOnline" Content="0" HorizontalAlignment="Left" Margin="324,202,0,0" VerticalAlignment="Top" Foreground="#FFF8ED04" FontSize="12.5" Width="59" Padding="0" FontWeight="SemiBold"/>
+        <Label x:Name="TOnline_Static" Content="In game:" HorizontalAlignment="Left" Margin="268,202,0,0" VerticalAlignment="Top" Foreground="White" FontSize="12.5" Width="56" Padding="0" FontWeight="SemiBold"/>
+        <Label Content="bunnyhop.us" HorizontalAlignment="Left" Margin="389,202,0,0" VerticalAlignment="Top" Style="{StaticResource linkStyle}" Padding="0" FontSize="12.5" MouseLeftButtonDown="Label_MouseLeftButtonDown"/>
     </Grid>
 </Window>

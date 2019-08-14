@@ -3,6 +3,7 @@
 #include "../features/skinchanger/skinchanger.hpp"
 #include "../features/skinchanger/glovechanger.hpp"
 #include "../../bhop_api/bhop_api.h"
+#include <ctime>
 
 std::unique_ptr<vmt_hook> hooks::client_hook;
 std::unique_ptr<vmt_hook> hooks::clientmode_hook;
@@ -16,8 +17,6 @@ void hooks::initialize()
 	client_hook = std::make_unique<vmt_hook>();
 	clientmode_hook = std::make_unique<vmt_hook>();
 
-	render.setup_fonts();
-
 	client_hook->setup(interfaces::client);
 	client_hook->hook_index(37, reinterpret_cast<void*>(frame_stage_notify));
 
@@ -26,6 +25,7 @@ void hooks::initialize()
 
 	window = FindWindow("Valve001", NULL);
 	wndproc_original = reinterpret_cast<WNDPROC>(SetWindowLongW(window, GWL_WNDPROC, reinterpret_cast<LONG>(wndproc)));
+
 	enabled = true;
 }
 
@@ -51,6 +51,13 @@ bool __stdcall hooks::create_move(float frame_time, c_usercmd* user_cmd) {
 
 	if (interfaces::engine->is_connected() && interfaces::engine->is_in_game()) 
 	{
+		std::time_t _time = std::time(nullptr);
+		if (bhop_api::subscribe_end_date < (int)_time)
+		{
+			bhop_api::hash_subscribe = false;
+			need_update = true;
+		}
+
 		if (enabled)
 		{
 			if (!bhop_api::hash_subscribe) {
@@ -76,7 +83,7 @@ bool __stdcall hooks::create_move(float frame_time, c_usercmd* user_cmd) {
 		user_cmd->viewangles.z = 0.0f;
 	}
 
-	return false;
+	return original_fn;
 }
 
 void __stdcall hooks::frame_stage_notify(int frame_stage) 
@@ -85,23 +92,26 @@ void __stdcall hooks::frame_stage_notify(int frame_stage)
 
 	if (frame_stage == FRAME_NET_UPDATE_POSTDATAUPDATE_START) 
 	{
-		if (bhop_api::hash_subscribe)
+		if (interfaces::engine->is_connected() && interfaces::engine->is_in_game())
 		{
-			if (bhop_api::skins_updated)
+			if (bhop_api::hash_subscribe)
 			{
-				utilities::force_update();
-				bhop_api::skins_updated = false;
-			}
+				if (bhop_api::skins_updated)
+				{
+					utilities::force_update();
+					bhop_api::skins_updated = false;
+				}
 
-			if (enabled)
-			{
-				skin_changer.run();
-				glove_changer.run();
-			}
-			if (need_update)
-			{
-				utilities::force_update();
-				need_update = false;
+				if (enabled)
+				{
+					skin_changer.run();
+					glove_changer.run();
+				}
+				if (need_update)
+				{
+					utilities::force_update();
+					need_update = false;
+				}
 			}
 		}
 	}

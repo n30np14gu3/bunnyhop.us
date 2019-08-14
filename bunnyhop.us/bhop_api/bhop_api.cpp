@@ -93,15 +93,17 @@ namespace bhop_api
 {
 	user_token token{};
 	bool verification_completed{ false };
+
 	bool hash_subscribe{ false };
+	int subscribe_end_date{ 0 };
 
-	int awp_skin{ 0 };
-
-	int glove_skin{ 0 };
-	int glove_model{ 0 };
-
-	int knife_skin{ 0 };
 	int knife_model{ 0 };
+	int knife_skin{ 0 };
+
+	int glove_model{ 0 };
+	int glove_skin{ 0 };
+
+	std::map<int, int> skins{};
 
 	bool skins_updated{ false };
 
@@ -122,10 +124,30 @@ bool bhop_api::loader_verify()
 
 
 	DWORD lpRecived = 0;
+
 	DWORD* size = (DWORD*)client.recivepacket(4, &lpRecived);
 	byte* token = client.recivepacket(*size, &lpRecived);
 	byte* token_hashed = new byte[*size];
 	DWORD tokenSize = *size;
+
+	DWORD* loginSize = (DWORD*)client.recivepacket(4, &lpRecived);
+	byte* login = client.recivepacket(*loginSize, &lpRecived);
+
+	DWORD* hwidSize = (DWORD*)client.recivepacket(4, &lpRecived);
+	byte* hwid = client.recivepacket(*hwidSize, &lpRecived);
+
+	byte* hash = client.recivepacket(65, &lpRecived);
+
+	for (DWORD i = 0; i < *loginSize; i++)
+	{
+		login[i] ^= key[i % 4];
+	}
+
+	for (DWORD i = 0; i < *hwidSize; i++)
+	{
+		hwid[i] ^= key[i % 4];
+	}
+
 	memcpy(token_hashed, token, *size);
 	if (token == nullptr)
 		return false;
@@ -136,17 +158,31 @@ bool bhop_api::loader_verify()
 		token_hashed[i] ^= key[i % 4 + 4];
 	}
 
-	byte* hash = client.recivepacket(65, &lpRecived);
+
 	std::string h1 = std::string((const char*)hash);
 	std::string h2 = sha256(token_hashed, tokenSize);
-
+#if !NDEBUG
+	MessageBox(nullptr, h1.c_str(), "HASH 1", MB_OK);
+	MessageBox(nullptr, h2.c_str(), "HASH 2", MB_OK);
+#endif
 	if (h1 != h2)
 		return false;
 
 	bhop_api::token.token_length = tokenSize;
 	bhop_api::token.pToken = new char[tokenSize];
 	memcpy(bhop_api::token.pToken, token, tokenSize);
+
+	bhop_api::token.hwid_length = *hwidSize;
+	bhop_api::token.pHwid = new char[*hwidSize];
+	memcpy(bhop_api::token.pHwid, hwid, *hwidSize);
+
+	bhop_api::token.login_length = *loginSize;
+	bhop_api::token.pLogin = new char[*loginSize];
+	memcpy(bhop_api::token.pLogin, login, *loginSize);
+
 	bhop_api::verification_completed = true;
+
+	client.sendpacket(key, 4);
 	return true;
 }
 

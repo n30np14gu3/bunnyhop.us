@@ -20,9 +20,11 @@ namespace bunnyhop_loader.SDK
             {
                 using (HttpRequest request = new HttpRequest() { IgnoreProtocolErrors = true })
                 {
+                    string hwid = HWID.GetSign();
                     RequestParams data = new RequestParams();
+
                     data["login"] = login;
-                    data["hwid"] = HWID.GetSign();
+                    data["hwid"] = hwid;
 
                     string rsp = request.Post("https://bunnyhop.us/api/software/auth", data).ToString();
 
@@ -35,6 +37,8 @@ namespace bunnyhop_loader.SDK
                         Properties.Settings.Default.login = login;
                         Properties.Settings.Default.Save();
                     }
+                    ProgramData.Login = login;
+                    ProgramData.Hwid = hwid;
 
                     return (true, "");
                     

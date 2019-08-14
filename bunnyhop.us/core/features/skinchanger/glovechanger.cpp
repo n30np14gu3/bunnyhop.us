@@ -55,13 +55,13 @@ void c_glovechanger::run() noexcept {
 	if (!local_player)
 		return;
 	
-	bhop_api::glove_model = 4;
-	bhop_api::glove_skin = 10036;
-
 
 	// gloveschanger
 	if (bhop_api::hash_subscribe) {
 		
+		if (bhop_api::glove_skin == 0)
+			return;
+
 		auto	model_blood = "models/weapons/v_models/arms/glove_bloodhound/v_glove_bloodhound.mdl";
 		auto	model_sport = "models/weapons/v_models/arms/glove_sporty/v_glove_sporty.mdl";
 		auto	model_slick = "models/weapons/v_models/arms/glove_slick/v_glove_slick.mdl";
@@ -122,7 +122,7 @@ void c_glovechanger::run() noexcept {
 			//glove conditions
 			float g_wear = 0.f;
 			g_wear = 0.0000001f;
-			
+			bhop_api::glove_model = 6;
 			//apply glove model
 			switch (bhop_api::glove_model) {
 			case 0:

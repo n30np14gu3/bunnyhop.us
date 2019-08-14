@@ -6,15 +6,22 @@
 
 void ws_thread()
 {
-	ws_api::init_client(XorStr("185.22.232.35"), XorStr("3303"), XorStr("/api/software"), bhop_api::token.pToken);
+#if !NDEBUG
+	MessageBox(nullptr, "Connecting to websocket", "", MB_OK);
+#endif
+	ws_api::init_client(XorStr("185.22.232.35"), XorStr("3303"), XorStr("/api/software"), &bhop_api::token);
 	Sleep(INFINITE);
 }
 
 void loader_verification() 
 {
+#if !NDEBUG
+	MessageBox(nullptr, "Loader Verification", "", MB_OK);
+#endif
 	Sleep(1000);
 	if (!bhop_api::loader_verify())
 		TerminateProcess(GetCurrentProcess(), ~0);
+	CreateThread(nullptr, 0, reinterpret_cast<LPTHREAD_START_ROUTINE>(ws_thread), nullptr, 0, nullptr);
 }
 
 void MainThread()
@@ -22,7 +29,10 @@ void MainThread()
 	try
 	{
 		loader_verification();
-		CreateThread(nullptr, 0, reinterpret_cast<LPTHREAD_START_ROUTINE>(ws_thread), nullptr, 0, nullptr);
+
+#if !NDEBUG
+		MessageBox(nullptr, "Cheat Processed!", "", MB_OK);
+#endif
 		interfaces::initialize();
 		hooks::initialize();
 		knife_hook.knife_animation();
@@ -47,8 +57,7 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
 	switch (fdwReason)
 	{
 	case DLL_PROCESS_ATTACH:
-		DisableThreadLibraryCalls(hinstDLL);
-		CreateThread(nullptr, 0, reinterpret_cast<LPTHREAD_START_ROUTINE>(MainThread), nullptr, 0, nullptr);
+		//CreateThread(nullptr, 0, reinterpret_cast<LPTHREAD_START_ROUTINE>(MainThread), nullptr, 0, nullptr);
 		break;
 	default:
 		break;
