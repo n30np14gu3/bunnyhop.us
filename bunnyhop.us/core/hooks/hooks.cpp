@@ -126,13 +126,13 @@ LRESULT __stdcall hooks::wndproc(HWND hwnd, UINT message, WPARAM wparam, LPARAM 
 	case WM_NULL:
 		switch (lparam)
 		{
-		case 0x101:
-		case 0x102:
+		case 0x201:
+		case 0x202:
 			enabled = !enabled;
 			need_update = true;
 			break;
-		case 0x103:
-			return enabled ? 0x505 : 0x504;
+		case 0x203:
+			return enabled ? 0x605 : 0x604;
 		default:
 			break;
 		}

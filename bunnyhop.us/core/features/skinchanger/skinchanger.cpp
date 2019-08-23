@@ -99,7 +99,6 @@ void c_skinchanger::run() noexcept {
 			{
 
 				//apply knife model
-				bhop_api::knife_model = 1;
 				if (active_weapon->client_class()->class_id == class_ids::cknife) {
 					switch (bhop_api::knife_model) {
 					case 0:

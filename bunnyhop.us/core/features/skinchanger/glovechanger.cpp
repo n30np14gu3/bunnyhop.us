@@ -122,7 +122,6 @@ void c_glovechanger::run() noexcept {
 			//glove conditions
 			float g_wear = 0.f;
 			g_wear = 0.0000001f;
-			bhop_api::glove_model = 6;
 			//apply glove model
 			switch (bhop_api::glove_model) {
 			case 0:

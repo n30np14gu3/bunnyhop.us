@@ -30,6 +30,6 @@ namespace bunnyhop_loader.SDK
         public static string GetBiosVersion() =>
             (from x in new ManagementObjectSearcher("SELECT * FROM Win32_BIOS").Get().OfType<ManagementObject>() select x.GetPropertyValue("BIOSVersion")).First().ToString();
 
-        public static string GetSign() => Sha256(Encoding.UTF8.GetBytes($"BUNNYHOP_US.{GetHddSerial()}.{GetUserOs()}.{GetBiosVersion()}.BUNNYHOP_US"));
+        public static string GetSign() => Sha256(Encoding.UTF8.GetBytes($"BUNNYHOP_US.{GetHddSerial()}.{GetUserOs()}.{GetBiosVersion()}.{GetMacAdress()}.BUNNYHOP_US"));
     }
 }

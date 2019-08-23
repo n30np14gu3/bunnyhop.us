@@ -17,6 +17,7 @@ namespace bunnyhop_loader.SDK
             {"duplicateHwid", "You already have an account that is linked to this PC. Code: #f66666" },
             {"empty_paramers", "Type your login!" },
             {"can_not_connection", "Program error, try again later. Code: #f32522" },
+            {"versionNotFound","Server error, try again later. Code: #f23543" }
         };
 
         public static readonly string UserInfoText = "If you have any problems with the launch, try to find a solution in the FAQ on our website.";

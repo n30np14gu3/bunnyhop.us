@@ -30,7 +30,10 @@ namespace bunnyhop_loader.SDK
 
                     ProgramData.UserInfo = JsonConvert.DeserializeObject<UserData>(rsp);
                     if(ProgramData.UserInfo.status == 3)
+                    {
+                        Properties.Settings.Default.Reset();
                         return (false, ProgramData.UserInfo.error[0]);
+                    }
 
                     if(string.IsNullOrWhiteSpace(Properties.Settings.Default.login))
                     {

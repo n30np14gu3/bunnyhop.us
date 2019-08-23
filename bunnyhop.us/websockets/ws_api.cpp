@@ -210,7 +210,6 @@ namespace ws_api
 #endif
 
 			buffer_.clear();
-			std::cout << s << std::endl;
 			rapidjson::Document d;
 			d.Parse(s.c_str());
 			std::string type = std::string(d["type"].GetString());

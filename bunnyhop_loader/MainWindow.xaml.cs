@@ -28,6 +28,7 @@ namespace bunnyhop_loader
         private bool _status;
 
         private Thread _checkcsgo = null;
+        private Thread _checkSub = null;
 
         public MainWindow()
         {
@@ -112,6 +113,13 @@ namespace bunnyhop_loader
                 return;
             }
 
+            if (ProgramData.UserInfo.version != ProgramData.LastUpdate)
+            {
+
+                updateRequested();
+                return;
+            }
+
             LoginInfoLabel.Content = TLogin.Text;
             LoginInfoText.Text = StaticData.UserInfoText;
 
@@ -127,23 +135,19 @@ namespace bunnyhop_loader
             BLogout.Visibility = Visibility.Visible;
             BActionBtn.Visibility = Visibility.Visible;
 
-            if(ProgramData.UserInfo.subscribe)
+            if (ProgramData.UserInfo.subscribe)
             {
                 BShowWebsite.Content = UnixTimeStampToDateTime(ProgramData.UserInfo.dateEnd);
             }
-            if (UnixTimeStampToDateTime(ProgramData.UserInfo.version) > ProgramData.LastUpdate)
-            {
-                updateRequested();
-                return;
-            }
 
             BActionBtn.IsEnabled = true;
-
+            _checkSub = new Thread(checkSub) {IsBackground = true, Priority = ThreadPriority.Lowest};
+            _checkSub.Start();
             IntPtr hwnd = WinApi.FindWindowA(IntPtr.Zero, "Counter-Strike: Global Offensive");
             if (hwnd != IntPtr.Zero)
             {
                 IntPtr lResult = WinApi.SendMessage(hwnd, 0, IntPtr.Zero, (IntPtr)0x103);
-                if (lResult == (IntPtr)0x505)
+                if (lResult == (IntPtr)0x605)
                 {
                     _injected = true;
                     _isEnabled = true;
@@ -151,7 +155,7 @@ namespace bunnyhop_loader
                     return;
                 }
 
-                if (lResult == (IntPtr)0x504)
+                if (lResult == (IntPtr)0x604)
                 {
                     _injected = true;
                     _isEnabled = false;
@@ -162,6 +166,22 @@ namespace bunnyhop_loader
 
         }
 
+        private void checkSub()
+        {
+            while (true)
+            {
+                if (UnixTimeStampToDateTime(ProgramData.UserInfo.dateEnd) < DateTime.Now)
+                {
+                    Dispatcher.Invoke(() =>
+                    {
+                        BShowWebsite.Content = "Move to our website";
+                        
+                    });
+                    break;
+                }
+                Thread.Sleep(1000);
+            }
+        }
         private DateTime UnixTimeStampToDateTime(double unixTimeStamp)
         {
             DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
@@ -226,7 +246,7 @@ namespace bunnyhop_loader
 
                     case "update":
                         WsResponce<UpdateStruct> update = obj.ToObject<WsResponce<UpdateStruct>>();
-                        if (UnixTimeStampToDateTime(update.data.version) > ProgramData.LastUpdate)
+                        if (update.data.version != ProgramData.LastUpdate)
                             Dispatcher.Invoke(() => 
                             {
                                 updateRequested();
@@ -308,7 +328,7 @@ namespace bunnyhop_loader
                 if (hwnd != IntPtr.Zero)
                 {
                     BActionBtn.Content = _isEnabled ? "Turn off bunnyhop" : "Turn on bunnyhop";
-                    IntPtr comand = _isEnabled ? (IntPtr)0x102 : (IntPtr)0x101;
+                    IntPtr comand = _isEnabled ? (IntPtr)0x202 : (IntPtr)0x201;
                     WinApi.SendMessage(hwnd, 0, IntPtr.Zero, comand);
                     showMessage($"You have turned {(_isEnabled ? "on" : "off")} bunnyhop", "Close", "");
                 }
@@ -453,7 +473,6 @@ namespace bunnyhop_loader
             BActionBtn.IsEnabled = false;
 #else
             BActionBtn.IsEnabled = true;
-            return;
 #endif
         }
 
